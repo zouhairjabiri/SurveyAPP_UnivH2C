@@ -5,8 +5,8 @@ import { Item, Input } from 'native-base';
 import { FontAwesome } from '@expo/vector-icons';
 import Loader from '../config/Loader'
 export function Login(props) {
-  const [username, setusername] = useState({ value: '', error: '' });
-  const [password, setPassword] = useState({ value: '', error: '' });
+  const [username, setusername] = useState({ value: 'test@gmail.com', error: '' });
+  const [password, setPassword] = useState({ value: 'test', error: '' });
   const [error, seterror] = useState('');
   const [inputtext, setinputtext] = useState(true);
   const [icon, seticon] = useState('eye');

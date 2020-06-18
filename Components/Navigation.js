@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Login from './main/Login'
 import Signup from './main/Signup'
 import Home from './main/Home'
-import main from './main/main'
+import reducer from './main/reducer'
 
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -28,7 +28,7 @@ function MyStack({ navigation }) {
   const [username, setusername] = useState('');
   token = async () => {
     try {
-      const getusername = await AsyncStorage.getItem('@username');
+      const getusername = await AsyncStorage.getItem('@email');
       setusername(getusername)
       setisloading(false)
     }
@@ -47,11 +47,11 @@ function MyStack({ navigation }) {
                 <Stack.Screen name="Home" component={Home} />
                 <Stack.Screen name="Signup" component={Signup} />
                 <Stack.Screen name="Login" component={Login} />
-                <Stack.Screen name="main" component={main} />
+                <Stack.Screen name="reducer" component={reducer} />
             </>
           ) : (
             <>
-                <Stack.Screen name="main" component={main} />
+                <Stack.Screen name="reducer" component={reducer} />
                 <Stack.Screen name="Home" component={Home} />
                 <Stack.Screen name="Signup" component={Signup} />
                 <Stack.Screen name="Login" component={Login} />

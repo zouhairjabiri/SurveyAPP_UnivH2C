@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "CovidSurvey",
-    "slug": "CovidSurvey",
+    "name": "Covid19Survey",
+    "slug": "Covid19Survey",
     "platforms": [
       "ios",
       "android",
