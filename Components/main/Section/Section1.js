@@ -6,7 +6,8 @@ import { Fontisto } from '@expo/vector-icons';
 import {SEXECHOICES, 
     STATUTCHOICES,
     NIVEAUETUDECHOICES,
-    ACTIVITECHOICES
+    ACTIVITECHOICES,
+    MILIEUCHOICES, REVENUCHOICES
     
     
  }from '../../config/Choices'
@@ -29,6 +30,7 @@ export default function Section1() {
     const [Activite, setActivite] = useState('');
     const [ActiviteSiActive, setActiviteSiActive] = useState('');
     const [AutreActivite, setAutreActivite] = useState('');
+    const [revenu, setrevenu] = useState('');
     const [Quartier, setQuartier] = useState('');
     const [Ville, setVille] = useState('');
     const [MilieuDeResidence, setMilieuDeResidence] = useState('');
@@ -131,8 +133,6 @@ export default function Section1() {
                     onChangeText={value => setniveauetude(value)}
                 />
             </View>
-
-            
             <View style={styles.zone}>
                 <Text style={styles.zoneText}>Activité : </Text>
                 <Dropdown
@@ -164,6 +164,70 @@ export default function Section1() {
                     />
                     : null
                 }
+            </View>
+
+            <View style={styles.zone}>
+                <Text style={styles.zoneText}>Revenu mensuel du ménage :</Text>
+                <Dropdown
+                    value={'Cliquez ici...'}
+                    containerStyle={styles.dropdowncontainer}
+                    style={styles.dropdown}
+                    data={REVENUCHOICES}
+                    selectedItem={revenu}
+                    baseColor='#ecf0f1'
+                    onChangeText={value => setrevenu(value)}
+                />
+            </View>
+            <View style={styles.zone}>
+                <Text style={styles.zoneText}>Adresse actuelle :</Text>
+                <TextInput
+                    style={styles.textInput}
+                    placeholder="Quartier"
+                    value={Quartier}
+                    onChangeText={value => setQuartier(value)}
+                    placeholderTextColor={'#d3d0d2'}
+                    
+                />
+
+                <TextInput
+                    style={styles.textInput}
+                    placeholder="Ville"
+                    value={Ville}
+                    onChangeText={value => setVille(value)}
+                    placeholderTextColor={'#d3d0d2'}
+                />
+            </View>
+
+            <View style={styles.zone}>
+                <Text style={styles.zoneText}>Milieu de résidence :</Text>
+                <Dropdown
+                    value={'Cliquez ici...'}
+                    containerStyle={styles.dropdowncontainer}
+                    style={styles.dropdown}
+                    data={MILIEUCHOICES}
+                    selectedItem={MilieuDeResidence}
+                    baseColor='#ecf0f1'
+                />
+            </View>
+
+            <View style={styles.zone}>
+                <Text style={styles.zoneText}>Mesures Physiques :</Text>
+                <TextInput
+                    style={styles.textInput}
+                    placeholder="Poids"
+                    value={Poids}
+                    onChangeText={value => setPoids(value)}
+                    placeholderTextColor={'#d3d0d2'}
+                    
+                />
+
+                <TextInput
+                    style={styles.textInput}
+                    placeholder="Taille"
+                    value={Taille}
+                    onChangeText={value => setTaille(value)}
+                    placeholderTextColor={'#d3d0d2'}
+                />
             </View>
 
         </View>

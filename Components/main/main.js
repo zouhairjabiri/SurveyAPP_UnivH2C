@@ -10,8 +10,8 @@ export default function main() {
   return (
     <View style={styles.container}>
       <View style={{marginTop: 20}} />
-      <ProgressSteps>
-        <ProgressStep label="Informations Générales ">
+      <ProgressSteps marginBottom={30} >
+        <ProgressStep label="Informations Générales">
           <Section1 />
         </ProgressStep>
 

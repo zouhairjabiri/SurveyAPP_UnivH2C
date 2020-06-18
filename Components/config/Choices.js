@@ -11,3 +11,10 @@ export  const NIVEAUETUDECHOICES = [{ value: 'Non scolarisé', }, { value: 'Ecol
 export  const ACTIVITECHOICES = [{ value: 'élève', }, { value: 'étudiant ou en formation', }, { value: 'Actif', }, 
 {value: 'Retraité', }, { value: "Chômeur (ou à la recherche d'un emploi) ", },{ value: 'Femme au foyer', },{ value: 'Autre, préciser', }
 ];
+
+export  const REVENUCHOICES = [{ value: '<2500 DH ', }, { value: '[2500 et 5000 DH[', }, { value: '[5000 et 10000 DH[', }, 
+{value: '≥10000 DH', }, { value: "Ne sait pas", }];
+
+
+export  const MILIEUCHOICES = [{ value: 'Urbain', }, { value: 'Rural', }];
+

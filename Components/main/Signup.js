@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { View, ActivityIndicator, StyleSheet, AsyncStorage, Image, TextInput } from 'react-native'
+import { View,  StyleSheet, AsyncStorage, TextInput } from 'react-native'
 import { Text, Button,  } from 'galio-framework';
 import { Item, Input } from 'native-base';
 import { FontAwesome } from '@expo/vector-icons';
-
+import Loader from '../config/Loader'
 
 export function Signup(props) {
   const [username, setusername] = useState({ value: '', error: '' });
@@ -13,8 +13,18 @@ export function Signup(props) {
   const [error, seterror] = useState('');
   const [inputtext, setinputtext] = useState(true);
   const [icon, seticon] = useState('eye');
+  const [loadingstate, setloadingstate] = useState(false);
 
-  
+  async function token(key, value) {
+    try {
+      await AsyncStorage.setItem(key, value.toString());
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+
+    return true;
+  };
   const _changeIcon = () => {
     if( icon === 'eye-slash'){
       seticon('eye')
@@ -24,10 +34,10 @@ export function Signup(props) {
 
 
   const _onSignupPressed = () => {
+    setloadingstate(true)
     if (username.value.length > 0 && password.value.length > 0 && firstname.value.length > 0 &&
       lastname.value.length > 0) {
-      <ActivityIndicator size="large" color="#0000ff" />
-      fetch('https://telecovidprojet.herokuapp.com/api/UserPatient/auth_patient/', {
+      fetch('https://telecovidprojet.herokuapp.com/api/UserPatient/create_account/', {
         method: 'POST',
         headers: {
           Accept:
@@ -41,9 +51,13 @@ export function Signup(props) {
           last_name: lastname.value,
         }),
       }).then(res => res.json())
-        .then(res => {
-          console.warn(res)
+        .then(res => {          
           if (res.message === true) {
+            token('@id', res.id)
+            token('@firstname', res.First_name)
+            token('@lastname', res.Last_name)
+            token('@email', res.username)
+            setloadingstate(false)
             props.navigation.navigate('main')
           }
           else {
@@ -59,6 +73,7 @@ export function Signup(props) {
             {
               seterror("Email déja existe ")
             }
+            setloadingstate(false)
             
           }
         }
@@ -114,6 +129,7 @@ export function Signup(props) {
       <Text style={styles.buttontext} >S'incrire</Text></Button>
 
       <Text style={styles.error}>{error}</Text>
+      <Loader loading={loadingstate} />
 
       <Text style={{ marginTop: 60, color: '#ffffff' }}> Si vous avez déjà un compte, identifiez-vous.</Text>
       <Button

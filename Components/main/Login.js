@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, ActivityIndicator, Image, TextInput } from 'react-native'
+import { View, StyleSheet, ActivityIndicator, AsyncStorage, TextInput } from 'react-native'
 import { Text, Button } from 'galio-framework'
 import { Item, Input } from 'native-base';
 import { FontAwesome } from '@expo/vector-icons';
@@ -11,6 +11,18 @@ export function Login(props) {
   const [inputtext, setinputtext] = useState(true);
   const [icon, seticon] = useState('eye');
   const [loadingstate, setloadingstate] = useState(false);
+
+
+  async function token(key, value) {
+    try {
+      await AsyncStorage.setItem(key, value.toString());
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+
+    return true;
+  };
 
 
   const _changeIcon = () => {
@@ -40,6 +52,10 @@ export function Login(props) {
         .then(res => {
           setloadingstate(false)
           if (res.message === true) {
+            token('@id', res.id)
+            token('@firstname', res.First_name)
+            token('@lastname', res.Last_name)
+            token('@email', res.username)
             props.navigation.navigate('main');
           }else if (res.message === 1){
             setusername({ value: '' })
