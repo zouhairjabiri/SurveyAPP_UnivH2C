@@ -142,18 +142,18 @@ class Doctor(models.Model):
 class Patient(models.Model):
     utilisateur = models.OneToOneField(utilisateurPatient,on_delete=models.CASCADE)
     DateDeNaissance = models.DateField()
-    Sexe = models.CharField(max_length=10, choices=SEXE_CHOICES)
-    Statutmatrimonial = models.CharField(max_length=50, choices=STATUS_CHOICES)
+    Sexe = models.CharField(max_length=10)
+    Statutmatrimonial = models.CharField(max_length=50)
     AutreStatutmatrimonial = models.CharField(max_length=50, blank=True)
     NombreEnfants = models.IntegerField(default=0)
-    RevenumMensuel = models.CharField(max_length=40, choices=Revenu_CHOICES)
-    NiveauEtude = models.CharField(max_length=40, choices=NIVEAU_ETUDE_CHOICES)
-    Activite = models.CharField(max_length=100, choices=Activite_CHOICES, default=Activite_CHOICES[0][0])
+    RevenumMensuel = models.CharField(max_length=40)
+    NiveauEtude = models.CharField(max_length=40)
+    Activite = models.CharField(max_length=100)
     AutreActivite = models.CharField(max_length=100, blank=True)
     ActiviteSiActive = models.CharField(max_length=100, blank=True)
     Quartier = models.CharField(max_length=50)
     Ville = models.CharField(max_length=40)
-    MilieuDeResidence = models.CharField(max_length=10, choices=Milieu_de_residence_CHOICES)
+    MilieuDeResidence = models.CharField(max_length=10)
     Poids = models.FloatField()
     Taille = models.FloatField()
     def __str__(self):
@@ -201,23 +201,55 @@ class UtilisationDesMedicaments(models.Model):
     def __str__(self):
         return self.Patient.utilisateur.first_name+" "+self.Patient.utilisateur.last_name
 
-        
+##############  class ComorbiditePersonnelPatient  ####################
 class ComorbiditePersonnelPatient(models.Model):
     Patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     AutresMaladies = models.CharField(max_length=90,blank=True)
     AutreMedicaments = models.CharField(max_length=90,blank=True)
     VaccinationBCG = models.BooleanField()
-    TabagismeActif = models.CharField(max_length=30, choices=TabagismeActif_CHOICES)
+    TabagismeActif = models.CharField(max_length=30)
     DureeDeConsommation = models.IntegerField(default=0)
+    Grossesse = models.BooleanField(default=False)
+    NbSemaineamenorrhee = models.IntegerField(default=0)
 
     def __str__(self):
         return self.Patient.utilisateur.first_name+" "+self.Patient.utilisateur.last_name
 
 
+##############  class CirconstanceDeLaMaladie  ####################
+class CirconstanceDeLaMaladie(models.Model):
+    Patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
+    expose = models.BooleanField()
+    Zone = models.CharField(max_length=40,blank=True)
+    DateExposition = models.DateField(blank=True)
+    ContactConfirme = models.BooleanField()
+    ContactPersonne = models.CharField(max_length=40,   blank=True)
+    AutreContact = models.CharField(max_length=40,blank=True)
+    SourceInconnue = models.BooleanField()
+
+    def __str__(self):
+        return self.Patient.utilisateur.first_name+" "+self.Patient.utilisateur.last_name
+
+
+######################################################################### 
+#
+#
+#
+#    CHECKED MODELS 
+# 
+#
+##########################################################################
+
+
+
+
+
+
+
 ##############  class HistoireMaladiePersonnel  ####################
 class HistoireMaladiePersonnel(models.Model):
     Patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    HistoireMaladie = models.CharField(max_length=40, choices=HistoireMaladie_CHOICES)
+    HistoireMaladie = models.CharField(max_length=40)
     Date = models.DateField()
     Specification = models.CharField(max_length=80)
     
@@ -235,40 +267,6 @@ class NEWS(models.Model):
     FréquenceCardiaque = models.FloatField()
     Température = models.FloatField()
     NiveauDeConscience = models.FloatField()
-    Patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.Patient.utilisateur.first_name+" "+self.Patient.utilisateur.last_name
-
-
-##############  class ContactAvecUnCas  ####################
-class ContactAvecUnCas(models.Model):
-    ContactConfirme = models.BooleanField()
-    ContactPersonne = models.CharField(max_length=40, choices=ContactPersonne_CHOICES,blank=True)
-    AutreContact = models.CharField(max_length=40,blank=True)
-    SourceInconnue = models.BooleanField()
-    Patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.Patient.utilisateur.first_name+" "+self.Patient.utilisateur.last_name
-
-
-
-##############  class ZoneExposition  ####################
-class ZoneExposition(models.Model):
-    expose = models.BooleanField()
-    Zone = models.CharField(max_length=40,blank=True)
-    DateExposition = models.DateField(blank=True)
-    Patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.Patient.utilisateur.first_name+" "+self.Patient.utilisateur.last_name
-
-
-##############  class Enceinte  ####################
-class Enceinte(models.Model):
-    Grossesse = models.BooleanField(blank=True)
-    NbSemaineamenorrhee = models.IntegerField(blank=True)
     Patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
 
     def __str__(self):
