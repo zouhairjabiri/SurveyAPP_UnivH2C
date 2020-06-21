@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, Picker } from 'react-native';
 import { Text } from 'galio-framework'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Fontisto } from '@expo/vector-icons';
@@ -17,7 +17,6 @@ export default ({ handleChange, values, setFieldValue }) => {
     const [date, setDate] = React.useState(new Date());
     const [show, setShow] = React.useState(false);
     const [mode, setMode] = React.useState('date');
-
 
     const onChange = (event, selectedDate) => {
         setShow(false)
@@ -54,18 +53,27 @@ export default ({ handleChange, values, setFieldValue }) => {
 
             <View style={styles.zone}>
                 <Text style={styles.zoneText}>Sexe :</Text>
-                <Dropdown
-                    value={values.sexe}
-                    containerStyle={styles.dropdowncontainer}
-                    style={styles.dropdown}
-                    data={SEXECHOICES}
-                    selectedItem={values.sexe}
-                    onChangeText={handleChange("sexe")}
-                    baseColor='#ecf0f1'
-                />
+                <Picker
+                    selectedValue={values.sexe}
+                    style={{        
+                         width: 200,
+                        alignSelf: "center",
+                        marginTop: -15,
+                        marginBottom: 15,
+                     }}
+                    onValueChange={handleChange("sexe")}
+                >
+                    {SEXECHOICES.map(function (item) {
+                        let key = 0;
+                        return (
+                            <Picker.Item label={item.value} value={item.value} key={item.key} color='#000'/>
+                        )
+                    })
+                    }
+                </Picker>
             </View>
 
-            <View style={styles.zone}>
+            {/* <View style={styles.zone}>
                 <Text style={styles.zoneText}>Statut matrimonial :</Text>
                 <Dropdown
                     value={values.statutMatrimonial}
@@ -86,7 +94,7 @@ export default ({ handleChange, values, setFieldValue }) => {
                     />
                     : null
                 }
-            </View>
+            </View> */}
 
             <View style={styles.zone}>
                 <Text style={styles.zoneText}>Nombre d’enfants :</Text>
@@ -101,7 +109,7 @@ export default ({ handleChange, values, setFieldValue }) => {
                 />
             </View>
 
-            <View style={styles.zone}>
+            {/* <View style={styles.zone}>
                 <Text style={styles.zoneText}>Niveau d’étude :</Text>
                 <Dropdown
                     value={'Cliquez ici...'}
@@ -112,9 +120,9 @@ export default ({ handleChange, values, setFieldValue }) => {
                     onChangeText={handleChange("niveauetude")}
                     baseColor='#ecf0f1'
                 />
-            </View>
+            </View> */}
 
-            <View style={styles.zone}>
+            {/* <View style={styles.zone}>
                 <Text style={styles.zoneText}>Activité : </Text>
                 <Dropdown
                     value={values.Activite}
@@ -160,7 +168,7 @@ export default ({ handleChange, values, setFieldValue }) => {
                     baseColor='#ecf0f1'
                     onChangeText={handleChange("revenu")}
                 />
-            </View>
+            </View> */}
             <View style={styles.zone}>
                 <Text style={styles.zoneText}>Adresse actuelle :</Text>
                 <TextInput
@@ -179,9 +187,7 @@ export default ({ handleChange, values, setFieldValue }) => {
                     placeholderTextColor={'#d3d0d2'}
                 />
             </View>
-
-
-            <View style={styles.zone}>
+            {/* <View style={styles.zone}>
                 <Text style={styles.zoneText}>Milieu de résidence :</Text>
                 <Dropdown
                     containerStyle={styles.dropdowncontainer}
@@ -191,10 +197,8 @@ export default ({ handleChange, values, setFieldValue }) => {
                     selectedItem={values.MilieuDeResidence}
                     baseColor='#ecf0f1'
                     onChangeText={handleChange("MilieuDeResidence")}
-
                 />
-            </View>
-
+            </View> */}
             <View style={styles.zone}>
                 <Text style={styles.zoneText}>Mesures Physiques :</Text>
                 <TextInput
@@ -213,8 +217,6 @@ export default ({ handleChange, values, setFieldValue }) => {
                     placeholderTextColor={'#d3d0d2'}
                 />
             </View>
-
-
             <Text>{JSON.stringify(values, null, 2)}</Text>
         </View>
     );

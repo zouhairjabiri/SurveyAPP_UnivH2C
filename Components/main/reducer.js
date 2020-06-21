@@ -45,7 +45,7 @@ export default function reducer(props) {
             initialErrors={formErrors}
             enableReinitialize
         >
-            {({ values, handleChange, setFieldValue }) => (
+            {({ values, handleChange, setFieldValue, handleBlur }) => (
 
 
        <ProgressSteps marginBottom={30}>
@@ -55,8 +55,13 @@ export default function reducer(props) {
         </ProgressStep>
 
         <ProgressStep label="Comorbidité">
-          <Section2 navigation={navigation} values={values} handleChange={handleChange}/>
+          <Section2 navigation={navigation} handleBlur={handleBlur} setFieldValue={setFieldValue} values={values} handleChange={handleChange}/>
         </ProgressStep>
+
+        {/* <ProgressStep label="Circonstance de la maladie">
+          <Section3 navigation={navigation} setFieldValue={setFieldValue} values={values} handleChange={handleChange}/>
+        </ProgressStep> */}
+
       </ProgressSteps>
        )}
        </Formik>

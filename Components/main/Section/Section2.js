@@ -1,36 +1,138 @@
 import * as React from 'react';
-import { StyleSheet, View, TextInput } from 'react-native';
+import { StyleSheet, View, TextInput, Button, Picker } from 'react-native';
 import { Text } from 'galio-framework'
+import { Dropdown } from 'react-native-material-dropdown';
+import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 
-export default ({handleChange, values}) => {
+
+export default ({ handleChange, values, handleBlur, setFieldValue }) => {
+    const [Comorbidite, setComorbidite] = React.useState([{ value: '' }]);
+    const [Medicaments, setMedicaments] = React.useState([{ value: '' }]);
+    const [begin, setbegin] = React.useState(0);
+
+    React.useEffect(() => {
+        fetch(`https://telecovidprojet.herokuapp.com/api/Comorbidite/`, {
+            method: 'GET',
+            headers: {
+                Accept:
+                    'application/json',
+                'Content-Type': 'application/json',
+            }
+        }).then(res => res.json())
+            .then(res => {
+                res.map(function (item) {
+                    setComorbidite(Comorbidite => [{ value: item.NomAntecedent }, ...Comorbidite]);
+                });
+            }
+            )
+            .catch(error => console.log(error))
+
+        //  Fetch les Medicaments   
+        fetch(`https://telecovidprojet.herokuapp.com/api/Medicaments/`, {
+            method: 'GET',
+            headers: {
+                Accept:
+                    'application/json',
+                'Content-Type': 'application/json',
+            }
+        }).then(res => res.json())
+            .then(res => {
+                res.map(function (item) {
+                    console.log(item.NomAntecedent);
+                    setMedicaments(Medicaments => [{ value: item.NomAntecedent }, ...Medicaments]);
+                });
+            }
+            )
+            .catch(error => console.log(error))
+
+
+    }, []);
+
 
 
     return (
-                <View style={styles.container}>
-                    <View style={{ marginTop: 30 }} />
-        
-                    <View style={styles.zone}>
-                        <Text style={styles.zoneText}>Chi haja</Text>
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder="cuba"
-                            value={values.cuba}
-                            onChangeText={handleChange("cuba")}
-                            placeholderTextColor={'#d3d0d2'}
+        <View style={styles.container}>
+            <View style={{ marginTop: 30 }} />
+            <View style={styles.zone}>
+            {values.comordibite.map(({ text }, index) => (
+                <View key={index}>
+                    <Text style={styles.zoneText}>Statut matrimonial : #{index + 1}</Text>
+                    <Dropdown
+                        containerStyle={styles.dropdowncontainer}
+                        style={styles.dropdown}
+                        data={Comorbidite}
+                        value={values.comordibite[index].Comorbidite}
+                        onChangeText={handleChange(`comordibite[${index}].Comorbidite`)}
+                        baseColor='#ecf0f1'
+                    // onBlur={handleBlur(`comordibite[${index}].Comorbidite`)}
+                    />
+                    <Text style={styles.zoneText}>Age au diagnostic: #{index + 1}</Text>
+                    <TextInput
+                        key={index}
+                        value={values.comordibite[index].AgeAuDiagnostic}
+                        style={styles.textInput}
+                        placeholder="Écrivez ici..."
+                        onChangeText={handleChange(`comordibite[${index}].AgeAuDiagnostic`)}
+                        placeholderTextColor={'#d3d0d2'}
+                        keyboardType='numeric'
+                        onBlur={handleBlur(`comordibite[${index}].AgeAuDiagnostic`)}
 
-                        />
-
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder="Mlawi"
-                            value={values.Mlawi}
-                            onChangeText={handleChange("Mlawi")}
-                            placeholderTextColor={'#d3d0d2'}
-                        />
-                    </View>
-                <Text>{JSON.stringify(values, null, 2)}</Text>
+                    />
+                    <Text style={styles.zoneText}>Prise de traitement Pharmaceutique: #{index + 1}</Text>
+                    <RadioForm
+                        radio_props={[
+                            { label: 'non', value: 'non', key: 0 },
+                            { label: 'oui', value: 'oui', key: 1 }
+                        ]}
+                        // initial={begin ? 1 : `comordibite[${index}].PriseDeTraitement.key`}
+                        labelHorizontal={false}
+                        buttonColor={'#2196f3'}
+                        onPress={(value) => {
+                            setFieldValue(`comordibite[${index}].PriseDeTraitement`, value)
+                        }
+                        }
+                    />
                 </View>
-         
+
+            ))}
+                        <Button onPress={() => setFieldValue('comordibite', [...values.comordibite, ''])} title="ajouter un autre" />
+
+                  <Text style={styles.zoneText}>Autres maladies graves (A préciser) </Text>
+                    <TextInput
+                        value={values.AutresMaladies}
+                        style={styles.textInput}
+                        placeholder="Écrivez ici..."
+                        onChangeText={handleChange(`AutresMaladies`)}
+                        placeholderTextColor={'#d3d0d2'}
+
+                    />
+                            </View>
+
+
+           <View style={styles.zone}>
+                <Text style={styles.zoneText}>Vaccination BCG: </Text>
+                <Picker
+                    selectedValue={values.VaccinationBCG}
+                    style={{
+                        width: 200,
+                        alignSelf: "center",
+                        marginTop: -15,
+                        marginBottom: 15,
+                    }}
+                    onValueChange={handleChange("VaccinationBCG")}
+                >
+
+                    <Picker.Item label="oui" value="oui" key="0" color='#000' />
+                    <Picker.Item label="non" value="non" key="1" color='#000' />
+                </Picker>
+            </View>
+
+
+
+
+            <Text style={{ color: "#000" }}>{JSON.stringify(values, null, 2)}</Text>
+        </View>
+
     );
 }
 

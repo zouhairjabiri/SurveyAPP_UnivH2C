@@ -5,11 +5,13 @@ const FormDispatchContext = React.createContext();
 
 const initialState = {
   customer: {
-    values: {},
+    values: {
+      comordibite: [],
+    },
     errors: {}
+    
   }
 };
-
 const formReducer = (state, action) => {
   const { type, payload } = action;
   switch (type) {

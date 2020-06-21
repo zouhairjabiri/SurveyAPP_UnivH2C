@@ -1,5 +1,5 @@
   
-export  const SEXECHOICES = [{ value: 'Homme', }, { value: 'Femme', }];
+export  const SEXECHOICES = [{ value: 'Homme', key: 0,}, { value: 'Femme', key: 1,}];
    
 export  const STATUTCHOICES = [{ value: 'Célibataire', }, { value: 'Marié', }, { value: 'Divorcé(e)', }, { value: 'Veuf(ve)', }, { value: 'Non précisée', }];
 
